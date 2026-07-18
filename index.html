@@ -112,10 +112,13 @@ function draw(i) {
   const img = images[i]; if (!img || !img.complete) return;
   curFrame = i;
   const cw = canvas.width, ch = canvas.height;
-  const s = Math.min(cw / img.naturalWidth, ch / img.naturalHeight);
-  const w = img.naturalWidth * s, h = img.naturalHeight * s;
+  // crop 2.5% from each edge to remove source border lines
+  const cx = img.naturalWidth * 0.025, cy = img.naturalHeight * 0.025;
+  const sw = img.naturalWidth - cx * 2, sh = img.naturalHeight - cy * 2;
+  const s = Math.min(cw / sw, ch / sh);
+  const w = sw * s, h = sh * s;
   ctx.fillStyle = '#160d08'; ctx.fillRect(0, 0, cw, ch);
-  ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
+  ctx.drawImage(img, cx, cy, sw, sh, (cw - w) / 2, (ch - h) / 2, w, h);
 }
 
 function setCaption(p) {
