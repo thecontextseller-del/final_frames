@@ -3,19 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bit Treet — Crafted in Chocolate</title>
+<title>the big treet — café & bakery, Haripur Manali</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Jost:wght@200;300&display=swap" rel="stylesheet">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
-  :root { --bg:#160d08; --cream:#e8d5b0; --amber:#c98b4e; }
+  :root { --bg:#171009; --cream:#e8d5b0; --amber:#c98b4e; }
   html { scroll-behavior:auto; }
   body { background:var(--bg); color:var(--cream); font-family:'Jost',sans-serif; }
 
   .scrub-section { height:520vh; position:relative; }
   .sticky-stage { position:sticky; top:0; height:100vh; height:100svh; overflow:hidden;
     display:flex; align-items:center; justify-content:center; }
-  canvas { height:100%; width:100%; object-fit:contain; display:block; }
+  canvas { height:100%; width:min(100%, 732px); object-fit:contain; display:block; margin:0 auto; }
 
   /* gradient mask — blends frame bottom into page bg, hides any residue */
   .stage-mask { position:absolute; inset:0; pointer-events:none;
@@ -62,7 +62,7 @@
 <body>
 
 <div class="loader" id="loader">
-  <div class="word">BIT TREET</div>
+  <div class="word">THE BIG TREET</div>
   <div class="bar"><i id="barfill"></i></div>
 </div>
 
@@ -92,7 +92,7 @@ const captions = [
   { at:0.50, t:'Pieces Come Together',  s:'assembled by hand' },
   { at:0.66, t:'The Final Touch',       s:'silk-swirled ganache' },
   { at:0.84, t:'A Slice of Perfection', s:'made with love' },
-  { at:0.95, t:'Bit Treet',             s:'order yours today' },
+  { at:0.95, t:'the big treet',             s:'small café · big flavours · order on WhatsApp' },
 ];
 
 const canvas = document.getElementById('cakeCanvas');
@@ -112,13 +112,11 @@ function draw(i) {
   const img = images[i]; if (!img || !img.complete) return;
   curFrame = i;
   const cw = canvas.width, ch = canvas.height;
-  // crop 2.5% from each edge to remove source border lines
-  const cx = img.naturalWidth * 0.025, cy = img.naturalHeight * 0.025;
-  const sw = img.naturalWidth - cx * 2, sh = img.naturalHeight - cy * 2;
-  const s = Math.min(cw / sw, ch / sh);
-  const w = sw * s, h = sh * s;
-  ctx.fillStyle = '#160d08'; ctx.fillRect(0, 0, cw, ch);
-  ctx.drawImage(img, cx, cy, sw, sh, (cw - w) / 2, (ch - h) / 2, w, h);
+  const s = Math.min(cw / img.naturalWidth, ch / img.naturalHeight);
+  const w = img.naturalWidth * s, h = img.naturalHeight * s;
+  ctx.fillStyle = '#171009'; ctx.fillRect(0, 0, cw, ch);
+  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
 }
 
 function setCaption(p) {
